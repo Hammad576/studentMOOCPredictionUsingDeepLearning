@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Prediction Result{% endblock %}
+{% block content %}
+<section class="container mx-auto px-4 py-12 max-w-3xl">
+    <div class="bg-white shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-xl">
+        <div id="result-content" class="text-center py-12">
+            <div class="animate-spin inline-block w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+            <p class="mt-6 text-gray-600 text-xl font-medium">Analyzing student data...</p>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const prediction = urlParams.get('prediction');
+    const confidence = urlParams.get('confidence');
+
+    const adviceMap = {
+        'Pass': {
+            title: 'Outstanding Performance',
+            tips: [
+                'Maintain consistent study habits',
+                'Continue active forum engagement',
+                'Complete assessments promptly'
+            ],
+            color: 'bg-green-50 border-l-8 border-green-600',
+            icon: 'check-circle',
+            iconColor: 'green-600'
+        },
+        'Fail': {
+            title: 'Academic Improvement Needed',
+            tips: [
+                'Increase study time by 20%',
+                'Participate in 3+ weekly discussions',
+                'Review previous assessments'
+            ],
+            color: 'bg-red-50 border-l-8 border-red-600',
+            icon: 'exclamation-triangle',
+            iconColor: 'red-600'
+        },
+        'Withdrawn': {
+            title: 'Support Intervention Recommended',
+            tips: [
+                'Schedule advisor consultation',
+                'Explore academic resources',
+                'Develop time management plan'
+            ],
+            color: 'bg-amber-50 border-l-8 border-amber-600',
+            icon: 'user-times',
+            iconColor: 'amber-600'
+        },
+        'Distinction': {
+            title: 'Exemplary Achievement',
+            tips: [
+                'Mentor peers in study groups',
+                'Explore advanced course materials',
+                'Provide course feedback'
+            ],
+            color: 'bg-teal-50 border-l-8 border-teal-600',
+            icon: 'trophy',
+            iconColor: 'teal-600'
+        }
+    };
+
+    const resultContent = document.getElementById('result-content');
+    
+    if (prediction && adviceMap[prediction]) {
+        const advice = adviceMap[prediction];
+        resultContent.innerHTML = `
+            <div class="${advice.color} p-8 mb-8 rounded-xl shadow-sm">
+                <div class="flex items-center gap-4 mb-4">
+                    <i class="fas fa-${advice.icon} text-4xl text-${advice.iconColor}"></i>
+                    <h2 class="text-3xl font-bold text-gray-800">${prediction} Outcome</h2>
+                </div>
+                ${confidence ? `<p class="text-lg text-gray-600 font-medium">Confidence Level: ${confidence}%</p>` : ''}
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-xl shadow-inner">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-6">${advice.title}</h3>
+                <ul class="space-y-4">
+                    ${advice.tips.map(tip => `
+                        <li class="text-lg text-gray-700 flex items-start gap-3">
+                            <span class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-blue-500"></span>
+                            <span>${tip}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+            
+            <div class="mt-10 text-center">
+                <a href="/prediction" 
+                   class="inline-flex items-center justify-center px-8 py-3.5 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-md">
+                    New Prediction
+                </a>
+            </div>
+        `;
+    } else {
+        resultContent.innerHTML = `
+            <div class="bg-yellow-50 border-l-8 border-yellow-600 p-8 rounded-xl shadow-sm">
+                <div class="text-center space-y-6">
+                    <svg class="w-16 h-16 mx-auto text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <h2 class="text-3xl font-bold text-gray-800">Prediction Result Not Found</h2>
+                    <p class="text-xl text-gray-600">Please submit a new prediction to get started.</p>
+                    <a href="/prediction" 
+                       class="inline-block px-8 py-4 text-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-md">
+                        Create New Prediction
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+});
+</script>
+{% endblock %}

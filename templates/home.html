@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block title %}Home - Student Outcome Prediction{% endblock %}
+{% block content %}
+<style>
+body {
+    background: linear-gradient(120deg, #eef2f7 0%, #d9e2f0 100%);
+    color: #2d3748;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    background: linear-gradient(90deg, #4a90e2, #63b3ed);
+    padding: 25px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: #fff;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    background: #2b6cb0;
+    transform: translateY(-2px);
+}
+
+main {
+    flex: 1;
+    max-width: 1400px; /* Increased width for a wider layout */
+    margin: 20px auto;
+    padding: 0 15px; /* Reduced padding for less side spacing */
+}
+
+.content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease-in;
+}
+
+.content h1, .content h2, .content h3, .content h4 {
+    color: #2b6cb0;
+    margin-bottom: 15px;
+}
+
+.content h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.content h4 {
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.content h4:hover {
+    color: #1e4976;
+}
+
+.content p {
+    line-height: 1.8;
+    font-size: 1.1em;
+}
+
+.content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.content ul li {
+    margin-bottom: 12px;
+}
+
+.content ul li a {
+    color: #2b6cb0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.content ul li a:hover {
+    color: #1e4976;
+    text-decoration: underline;
+}
+
+.project-overview, .technical-approach, .features-data, .project-goals, .team-supervision {
+    margin-bottom: 35px;
+    padding: 25px;
+    background: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-overview:hover, .technical-approach:hover, .features-data:hover, .project-goals:hover, .team-supervision:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.technical-approach ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+}
+
+.technical-approach ol li {
+    margin-bottom: 18px;
+    position: relative;
+    padding-left: 35px;
+}
+
+.technical-approach ol li::before {
+    content: counter(step);
+    counter-increment: step;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background: #2b6cb0;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+}
+
+.features-data ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features-data ul li {
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.features-data ul li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: #2b6cb0;
+    font-size: 16px;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(90deg, #4a90e2, #63b3ed);
+    color: #fff;
+    margin-top: auto;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 12px;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    header h2 {
+        font-size: 1.5em;
+    }
+    main {
+        padding: 0 5px;  
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<section class="content">
+    <h1><i class="fas fa-graduation-cap"></i>Design and Development of a Hybrid Deep Learning Model 
+        for Student Performance Prediction in MOOCs: Integrating Optimized Feature Selection </h1>
+    <h2><i class="fas fa-university"></i></h2>
+    <h3><i class="fas fa-user-tie"></i> Project advisor: Ts.Dr.Chee Ken Nee</h3>
+    
+    <div class="project-overview">
+        <h4><i class="fas fa-lightbulb"></i> Project Overview</h4>
+        <p>Design and Development of a Hybrid Deep Learning Model 
+            for Student Performance Prediction in MOOCs: Integrating Optimized Feature Selection leverages advanced technology to forecast student performance in online courses. By analyzing key data points, we predict outcomes such as passing, failing, withdrawing, or achieving distinction, enabling timely interventions to boost success rates.</p>
+        <p>This initiative aims to empower educators and institutions with insights to enhance student retention and academic achievement.</p>
+    </div>
+    
+    <div class="technical-approach">
+        <h4><i class="fas fa-cogs"></i> Technical Approach</h4>
+        <p>Our approach utilizes a CNN+LSTM model, a powerful combination for pattern recognition and time-series analysis. Here’s a breakdown:</p>
+        <ol>
+            <li><strong>Data Collection:</strong> We gather 12 features, including grades and online engagement metrics.</li>
+            <li><strong>Pattern Detection (CNN):</strong> Identifies relationships within static data, like quiz performance.</li>
+            <li><strong>Temporal Analysis (LSTM):</strong> Tracks changes over time, such as increasing participation.</li>
+            <li><strong>Prediction:</strong> Combines insights to deliver accurate outcome forecasts.</li>
+        </ol>
+        <p>This hybrid model outperforms traditional methods by deeply learning from complex datasets.</p>
+    </div>
+    
+    <div class="features-data">
+        <h4><i class="fas fa-database"></i> Features and Data</h4>
+        <p>We base our predictions on 12 features categorized into three areas:</p>
+        <ul>
+            <li><strong>Academic Background:</strong> Course attempts, credits studied.</li>
+            <li><strong>Engagement Metrics:</strong> Forum posts, resource views, quiz attempts, tool usage.</li>
+            <li><strong>Demographics:</strong> Education level, income indicators, age, disability status.</li>
+        </ul>
+        <p>These features are refined and standardized to optimize model performance.</p>
+    </div>
+    
+    <div class="project-goals">
+        <h4><i class="fas fa-bullseye"></i> Project Goals</h4>
+        <ul>
+            <li>Develop a highly accurate prediction tool.</li>
+            <li>Enable early identification of at-risk students.</li>
+            <li>Identify key factors influencing success.</li>
+            <li>Create an intuitive web interface for exploring predictions.</li>
+        </ul>
+        <p>Success here could transform online education outcomes.</p>
+    </div>
+    
+    <div class="team-supervision">
+        <h4><i class="fas fa-users"></i> Team and Supervision</h4>
+        <p>Led by students and researchers at COMSATS University Attock, this project benefits from Dr. Shehzad Rizwan’s expert supervision, ensuring cutting-edge solutions to real-world challenges.</p>
+        <p>Contact us at shehzadRizwan@gmail.com for more details.</p>
+    </div>
+    
+    <p>Explore the site:</p>
+    <ul>
+        <li><a href="/graphs">View Results</a>: Visualize model performance.</li>
+        <li><a href="/prediction">Make Predictions</a>: Test predictions with student data.</li>
+        <li><a href="/about">Learn More</a>: Discover project details.</li>
+    </ul>
+</section>
+{% endblock %}

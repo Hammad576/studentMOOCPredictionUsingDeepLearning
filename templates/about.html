@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% block title %}About - Student Outcome Prediction{% endblock %}
+{% block content %}
+<style>
+body {
+    background: linear-gradient(120deg, #eef2f7 0%, #d9e2f0 100%);
+    color: #2d3748;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    background: linear-gradient(90deg, #4a90e2, #63b3ed);
+    padding: 25px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: #fff;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    background: #2b6cb0;
+    transform: translateY(-2px);
+}
+
+main {
+    flex: 1;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease-in;
+}
+
+.content h1, .content h3, .content h4 {
+    color: #2b6cb0;
+    margin-bottom: 15px;
+}
+
+.content h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.content h3 {
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.content h4 {
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.content h4:hover {
+    color: #1e4976;
+}
+
+.content p {
+    line-height: 1.8;
+    font-size: 1.1em;
+}
+
+.content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.content ul li {
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.content ul li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: #2b6cb0;
+    font-size: 16px;
+}
+
+.content ul li a {
+    color: #2b6cb0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.content ul li a:hover {
+    color: #1e4976;
+    text-decoration: underline;
+}
+
+.project-overview, .objectives, .methodology, .features-data, .project-goals, .supervisor, .contact {
+    margin-bottom: 35px;
+    padding: 25px;
+    background: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-overview:hover, .objectives:hover, .methodology:hover, .features-data:hover, .project-goals:hover, .supervisor:hover, .contact:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.methodology ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+}
+
+.methodology ol li {
+    margin-bottom: 18px;
+    position: relative;
+    padding-left: 35px;
+}
+
+.methodology ol li::before {
+    content: counter(step);
+    counter-increment: step;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background: #2b6cb0;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(90deg, #4a90e2, #63b3ed);
+    color: #fff;
+    margin-top: auto;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 12px;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    header h3 {
+        font-size: 1.5em;
+    }
+    main {
+        padding: 0 5px;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<section class="content">
+    <h1><i class="fas fa-info-circle"></i> About the Student Outcome Prediction System</h1>
+    
+    <div class="project-overview">
+        <h4><i class="fas fa-lightbulb"></i> Project Overview</h4>
+        <p>The <strong>Student Outcome Prediction System</strong> is a cutting-edge project developed at COMSATS University Attock to predict student performance in online courses. By analyzing academic records, online engagement, and demographic details, our system forecasts whether a student will Pass, Fail, Withdraw, or achieve a Distinction. This allows educators to identify at-risk students early and provide targeted support to improve their chances of success.</p>
+        <p>Our goal is to enhance online education by leveraging advanced machine learning, making learning more effective and accessible for students worldwide.</p>
+    </div>
+    
+    <div class="objectives">
+        <h4><i class="fas fa-bullseye"></i> Objectives</h4>
+        <ul>
+            <li>Develop a highly accurate model to identify students who may struggle, enabling timely interventions.</li>
+            <li>Create an intuitive web interface for educators to input student data and receive real-time predictions.</li>
+            <li>Visualize key data insights through charts to help educators understand trends and make informed decisions.</li>
+            <li>Contribute to educational research by analyzing factors that influence student outcomes.</li>
+        </ul>
+    </div>
+    
+    <div class="methodology">
+        <h4><i class="fas fa-cogs"></i> Methodology</h4>
+        <p>Our system uses a hybrid <strong>CNN+LSTM model</strong>, combining two powerful machine learning techniques:</p>
+        <ol>
+            <li><strong>Convolutional Neural Network (CNN):</strong> Scans student data to find patterns, like how quiz scores and forum activity relate to success.</li>
+            <li><strong>Long Short-Term Memory (LSTM):</strong> Analyzes data as a sequence, capturing trends over time, such as changes in engagement.</li>
+            <li><strong>Data Processing:</strong> We clean and standardize 12 features, ensuring the model learns effectively.</li>
+            <li><strong>Prediction:</strong> The model outputs one of four outcomes (Pass, Fail, Withdrawn, Distinction) with high accuracy.</li>
+        </ol>
+        <p>Trained on a dataset of student records, this model outperforms traditional methods by deeply understanding complex relationships in the data.</p>
+    </div>
+    
+    <div class="features-data">
+        <h4><i class="fas fa-database"></i> Features and Data</h4>
+        <p>We use 12 features to make predictions, grouped into three categories:</p>
+        <ul>
+            <li><strong>Academic Background:</strong> Number of previous course attempts, credits studied.</li>
+            <li><strong>Engagement Metrics:</strong> Forum participation, content views, quiz attempts, resource usage.</li>
+            <li><strong>Demographic Details:</strong> Education level, socio-economic indicators, age group, disability status.</li>
+        </ul>
+        <p>These features are carefully selected based on their impact on student performance and are processed to ensure reliable predictions.</p>
+    </div>
+    
+    <div class="project-goals">
+        <h4><i class="fas fa-star"></i> Project Goals</h4>
+        <ul>
+            <li>Build a robust prediction tool to support educators and students.</li>
+            <li>Enable early detection of at-risk students to improve retention rates.</li>
+            <li>Provide actionable insights through data visualizations.</li>
+            <li>Create a user-friendly web platform for seamless interaction with the model.</li>
+        </ul>
+        <p>By achieving these goals, we aim to transform online education and support student success.</p>
+    </div>
+    
+    <div class="supervisor">
+        <h4><i class="fas fa-user-tie"></i> Supervisor</h4>
+        <p>This project was developed under the expert guidance of <strong>Dr. Shehzad Rizwan</strong> at COMSATS University Attock. His leadership and insights into machine learning and educational analytics were crucial to our success.</p>
+    </div>
+    
+    <div class="contact">
+        <h4><i class="fas fa-envelope"></i> Contact</h4>
+        <p>For inquiries, please contact the project team at <a href="mailto:[your-email@example.com]">shehzadRizwan@gmail.com</a>.</p>
+    </div>
+</section>
+{% endblock %}

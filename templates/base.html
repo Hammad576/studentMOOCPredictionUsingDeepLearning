@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Outcome Prediction{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #eef2f7 0%, #d9e2f0 100%);
+            color: #2d3748;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            background: linear-gradient(90deg, #4a90e2, #63b3ed);
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            color: #fff;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background: #2b6cb0;
+            transform: translateY(-2px);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        header h2 {
+            margin: 8px 0 0;
+            font-size: 26px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        main {
+            flex: 1;
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(90deg, #4a90e2, #63b3ed);
+            color: #fff;
+            margin-top: auto;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        footer .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        footer .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        footer .social-links a {
+            color: #fff;
+            font-size: 24px;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        footer .social-links a:hover {
+            color: #1e4976;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            header h1 {
+                font-size: 22px;
+            }
+            header h2 {
+                font-size: 18px;
+            }
+            main {
+                padding: 0 5px;
+            }
+            footer {
+                padding: 11px;
+            }
+            footer .footer-content {
+                gap: 8px;
+            }
+            footer .social-links a {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
+                <li><a href="/graphs" {% if request.path == '/graphs' %}class="active"{% endif %}>Graphs</a></li>
+                <li><a href="/model" {% if request.path == '/model' %}class="active"{% endif %}>Model</a></li>
+                <li><a href="/prediction" {% if request.path == '/prediction' %}class="active"{% endif %}>Prediction</a></li>
+                <li><a href="/about" {% if request.path == '/about' %}class="active"{% endif %}>About</a></li>
+            </ul>
+        </nav>
+        <h1>Student Outcome Prediction</h1>
+        <h2><a target="_blank" href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955">advisor: Ts.Dr.Chee Ken Nee</a> </h2>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 Student Outcome Prediction Project, COMSATS University Attock</p>
+            <p>Developed under the supervision of Project advisor: Ts.Dr.Chee Ken Nee</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/shehzad-rizwan-19a1b632/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.facebook.com/shehzadRizwan" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.twitter.com/shehzadRizwan" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/shehzadRizwan" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
