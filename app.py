@@ -30,7 +30,7 @@ class CNNLSTM(nn.Module):
         x = self.relu(x)
         x = self.pool(x)
         x = x.permute(0, 2, 1)
-        x, (hn, cn) = self.lstm(x)
+        x, _ = self.lstm(x)
         x = x[:, -1, :]
         x = self.fc1(x)
         x = self.relu(x)
@@ -47,16 +47,10 @@ try:
     model.eval()
     scaler = joblib.load('model/scaler.pkl')
     logging.info("Model and scaler loaded successfully")
-    # Test model
-    test_input = torch.zeros(1, 1, 12, dtype=torch.float32).to(device)
-    with torch.no_grad():
-        test_output = model(test_input)
-    logging.info(f"Model test output shape: {test_output.shape}")
 except Exception as e:
     logging.error(f"Error loading model or scaler: {e}", exc_info=True)
     raise
 
-# Input feature names and ranges (matched to scaler fit)
 FEATURES = [
     'num_of_prev_attempts', 'studied_credits', 'forumng', 'oucontent', 'quiz', 'resource',
     'highest_education_A Level or Equivalent', 'highest_education_HE Qualification',
@@ -77,7 +71,6 @@ RANGES = {
     'disability_Y': (0, 1)
 }
 
-# Load dataset for graphs
 def load_dataset():
     try:
         df = pd.read_csv('data/reduced_dataset.csv')
@@ -143,7 +136,7 @@ def graphs():
     return render_template('graphs.html')
 
 @app.route('/model')
-def model():
+def model_page():
     return render_template('model.html')
 
 @app.route('/prediction')
@@ -205,7 +198,7 @@ def result():
     return render_template(
         'result.html',
         prediction_result=prediction,
-        confidence=float(confidence) * 100,  # Convert to percentage
+        confidence=float(confidence) * 100,
         advice=advice_mapping.get(prediction, {'title': 'Unknown Outcome', 'tips': []})
     )
 
@@ -231,17 +224,8 @@ def predict():
         
         inputs = np.array(inputs, dtype=np.float32).reshape(1, -1)
         inputs_scaled = scaler.transform(inputs)
-        inputs_tensor = torch.tensor(inputs_scaled.reshape(1, 1, 12), dtype=torch.float32).to(device)
+        inputs_tensor = torch.tensor(inputs_scaled, dtype=torch.float32).reshape(1, 1, 12).to(device)
         
-        logging.debug(f"Scaled inputs: {inputs_scaled}")
-        
-        # Verify model is callable
-        if not callable(model):
-            logging.error("Model is not callable")
-            return jsonify({'error': 'Model is not callable'}), 500
-        logging.debug(f"Model type: {type(model)}, Callable: {callable(model)}")
-        
-        # Model inference
         with torch.no_grad():
             outputs = model(inputs_tensor)
             probabilities = torch.softmax(outputs, dim=1)
