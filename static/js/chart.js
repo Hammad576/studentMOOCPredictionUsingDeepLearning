@@ -37,22 +37,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Chart 2: Outcome Distribution (Pie → Bar)
             const outcomeChart = new Chart(document.getElementById('outcomeChart'), {
-                type: 'bar',
+                type: 'scatter',
                 data: {
-                    labels: Object.keys(data.outcome_counts),
                     datasets: [{
                         label: 'Outcome Distribution',
-                        data: Object.values(data.outcome_counts),
+                        data: Object.keys(data.outcome_counts).map((key, i) => ({
+                            x: i,
+                            y: data.outcome_counts[key]
+                        })),
                         backgroundColor: ['#a30000', '#00a8cc', '#f4a261', '#2a9d8f'],
                         borderColor: '#e8f0f2',
-                        borderWidth: 1
+                        pointRadius: 8,
+                        pointHoverRadius: 12
                     }]
                 },
                 options: {
                     responsive: true,
                     scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Count' } },
-                        x: { title: { display: true, text: 'Outcome' } }
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            ticks: {
+                                callback: function(value, index) {
+                                    return Object.keys(data.outcome_counts)[index] || '';
+                                },
+                                maxTicksLimit: Object.keys(data.outcome_counts).length
+                            },
+                            title: { display: true, text: 'Outcome' }
+                        },
+                        y: { beginAtZero: true, title: { display: true, text: 'Count' } }
                     },
                     plugins: { legend: { position: 'top' } }
                 }
@@ -134,7 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Chart 6: Gender Comparison (Bar, Unchanged)
             const genderChart = new Chart(document.getElementById('genderChart'), {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: ['Pass', 'Fail', 'Distinction', 'Withdrawn'],
                     datasets: [{
@@ -145,7 +158,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             data.gender_counts.female_distinction,
                             data.gender_counts.female_withdrawn
                         ],
-                        backgroundColor: '#ff6384'
+                        borderColor: '#ff6384',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        tension: 0.3
                     }, {
                         label: 'Male',
                         data: [
@@ -154,7 +170,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             data.gender_counts.male_distinction,
                             data.gender_counts.male_withdrawn
                         ],
-                        backgroundColor: '#36a2eb'
+                        borderColor: '#36a2eb',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        tension: 0.3
                     }]
                 },
                 options: {
