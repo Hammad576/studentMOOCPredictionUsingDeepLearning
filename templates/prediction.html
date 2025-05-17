@@ -1,385 +1,275 @@
 {% extends 'base.html' %}
 {% block title %}Prediction - Student Outcome Prediction{% endblock %}
 {% block content %}
-<style>
-body {
-    background: linear-gradient(120deg, #eef2f7 0%, #d9e2f0 100%);
-    color: #2d3748;
-    font-family: 'Open Sans', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-header {
-    text-align: center;
-    background: linear-gradient(90deg, #4a90e2, #63b3ed);
-    padding: 20px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    color: #fff;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 15px;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-nav ul li a:hover, nav ul li a.active {
-    background: #2b6cb0;
-    transform: translateY(-2px);
-}
-
-main {
-    flex: 1;
-    max-width: 1400px;
-    margin: 20px auto;
-    padding: 0 15px;
-}
-
-.content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.6s ease-in;
-}
-
-.content h1, .content h3, .content h4 {
-    color: #2b6cb0;
-    margin-bottom: 15px;
-}
-
-.content h1 {
-    font-size: 2.5em;
-    font-weight: 700;
-}
-
-.content h3 {
-    font-size: 2em;
-    font-weight: 600;
-}
-
-.content h4 {
-    font-size: 1.5em;
-    transition: color 0.3s ease;
-}
-
-.content h4:hover {
-    color: #1e4976;
-}
-
-.content p {
-    line-height: 1.8;
-    font-size: 1.1em;
-}
-
-.content ul {
-    list-style: none;
-    padding: 0;
-}
-
-.content ul li {
-    margin-bottom: 12px;
-    position: relative;
-    padding-left: 25px;
-}
-
-.content ul li::before {
-    content: "◆";
-    position: absolute;
-    left: 0;
-    color: #2b6cb0;
-    font-size: 16px;
-}
-
-.content ul li a {
-    color: #2b6cb0;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.content ul li a:hover {
-    color: #1e4976;
-    text-decoration: underline;
-}
-
-.prediction-intro, .supervisor, .explore {
-    margin-bottom: 35px;
-    padding: 25px;
-    background: #f9fafb;
-    border-radius: 12px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.prediction-intro:hover, .supervisor:hover, .explore:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.prediction-form {
-    margin: 20px 0;
-    padding: 25px;
-    background: #f9fafb;
-    border-radius: 12px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-}
-
-.prediction-form:hover {
-    transform: translateY(-5px);
-}
-
-.form-section {
-    margin-bottom: 20px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    font-size: 1.1em;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 8px;
-    transition: color 0.3s ease;
-}
-
-.form-group label:hover {
-    color: #1e4976;
-}
-
-.form-group input, .form-group select {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #2b6cb0;
-    border-radius: 6px;
-    background: #fff;
-    transition: border-color 0.3s ease, background 0.3s ease;
-}
-
-.form-group input:hover, .form-group select:hover {
-    border-color: #1e4976;
-}
-
-.form-group input:focus, .form-group select:focus {
-    outline: none;
-    border-color: #1e4976;
-    background: #e6f0fa;
-}
-
-button[type="submit"] {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 30px;
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #fff;
-    background: #2b6cb0;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-button[type="submit"]:hover {
-    background: #1e4976;
-    transform: scale(1.05);
-}
-
-button[type="submit"]:active {
-    transform: scale(0.95);
-}
-
-.result, .error {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    text-align: center;
-    animation: fadeIn 0.6s ease-in;
-}
-
-.result {
-    background: #e6fffa;
-    color: #2f855a;
-}
-
-.error {
-    background: #fff5f5;
-    color: #c53030;
-}
-
-footer {
-    text-align: center;
-    padding: 16px;
-    background: linear-gradient(90deg, #4a90e2, #63b3ed);
-    color: #fff;
-    margin-top: auto;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-@media (max-width: 600px) {
-    nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-    header h1 {
-        font-size: 1.8em;
-    }
-    header h3 {
-        font-size: 1.5em;
-    }
-    main {
-        padding: 0 5px;
-    }
-    .form-section {
-        padding: 15px;
-    }
-    .form-group input, .form-group select {
-        font-size: 0.9em;
-        padding: 8px;
-    }
-    button[type="submit"] {
-        font-size: 1em;
-        padding: 10px 20px;
-    }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-</style>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<section class="container mx-auto px-4 py-8">
+    <h3 class="text-3xl font-bold text-gray-800 mb-6">
+        <i class="fas fa-brain mr-2"></i>Predict Student Outcome
+    </h3>
 
-<section class="content">
-    <h1><i class="fas fa-brain"></i> Predict Student Outcome</h1>
-    
-    <div class="prediction-intro">
-        <h4><i class="fas fa-lightbulb"></i> Why Predict Outcomes?</h4>
-        <p>The <strong>Student Outcome Prediction System</strong>, developed at COMSATS University Attock, enables educators to forecast student performance in online courses. By entering academic, engagement, and demographic data, our advanced CNN+LSTM model predicts whether a student will Pass, Fail, Withdraw, or achieve a Distinction. This tool helps identify at-risk students early, allowing for timely interventions to boost success rates.</p>
-    </div>
-    
-    <form id="prediction-form" class="prediction-form">
-        <div class="form-section">
-            <h4><i class="fas fa-book"></i> Academic Information</h4>
-            <div class="form-group">
-                <label for="num_of_prev_attempts">Number of Previous Attempts (0-5):</label>
-                <input type="number" id="num_of_prev_attempts" name="num_of_prev_attempts" min="0" max="5" value="0" step="1" required>
-            </div>
-            <div class="form-group">
-                <label for="studied_credits">Studied Credits (30-200):</label>
-                <input type="number" id="studied_credits" name="studied_credits" min="30" max="200" value="60" step="10" required>
-            </div>
+    <div class="space-y-8">
+        <!-- Prediction Intro -->
+        <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h4 class="text-xl font-semibold text-blue-600 mb-4">
+                <i class="fas fa-lightbulb mr-2"></i>Why Predict Outcomes?
+            </h4>
+            <p class="text-gray-600 leading-relaxed">
+                The <strong>Design and Development of a Hybrid Deep Learning Model for Student Performance Prediction in MOOCs: Integrating Optimized Feature Selection</strong> enables educators to forecast student performance in Massive Open Online Courses (MOOCs). Using a hybrid CNN+LSTM model, the system analyzes academic, engagement, and demographic data to predict outcomes (Pass, Fail, Withdrawn, Distinction). This tool helps identify at-risk students early, supporting timely interventions to enhance success rates.
+            </p>
         </div>
-        <div class="form-section">
-            <h4><i class="fas fa-users"></i> Engagement Metrics</h4>
-            <div class="form-group">
-                <label for="forumng">Forum Interactions (0-100):</label>
-                <input type="number" id="forumng" name="forumng" min="0" max="100" value="10" step="1" required>
-            </div>
-            <div class="form-group">
-                <label for="oucontent">Content Interactions (0-200):</label>
-                <input type="number" id="oucontent" name="oucontent" min="0" max="200" value="50" step="1" required>
-            </div>
-            <div class="form-group">
-                <label for="quiz">Quiz Interactions (0-50):</label>
-                <input type="number" id="quiz" name="quiz" min="0" max="50" value="5" step="1" required>
-            </div>
-            <div class="form-group">
-                <label for="resource">Resource Interactions (0-100):</label>
-                <input type="number" id="resource" name="resource" min="0" max="100" value="20" step="1" required>
-            </div>
+
+        <!-- Prediction Form -->
+        <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h4 class="text-xl font-semibold text-blue-600 mb-4">
+                <i class="fas fa-edit mr-2"></i>Enter Student Data
+            </h4>
+            <form id="prediction-form" class="space-y-6">
+                <!-- Academic Information -->
+                <div class="form-section">
+                    <h5 class="text-lg font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-book mr-2"></i>Academic Information
+                    </h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="num_of_prev_attempts" class="block text-gray-600 mb-1">
+                                Number of Previous Attempts (0-5)
+                            </label>
+                            <input type="number" id="num_of_prev_attempts" name="num_of_prev_attempts" 
+                                   min="0" max="5" value="0" step="1" required
+                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="form-group">
+                            <label for="studied_credits" class="block text-gray-600 mb-1">
+                                Studied Credits (30-200)
+                            </label>
+                            <input type="number" id="studied_credits" name="studied_credits" 
+                                   min="30" max="200" value="60" step="10" required
+                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engagement Metrics -->
+                <div class="form-section">
+                    <h5 class="text-lg font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-users mr-2"></i>Engagement Metrics
+                    </h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="forumng" class="block text-gray-600 mb-1">
+                                Forum Interactions (0-100)
+                            </label>
+                            <input type="number" id="forumng" name="forumng" 
+                                   min="0" max="100" value="10" step="1" required
+                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="form-group">
+                            <label for="oucontent" class="block text-gray-600 mb-1">
+                                Content Interactions (0-200)
+                            </label>
+                            <input type="number" id="oucontent" name="oucontent" 
+                                   min="0" max="200" value="50" step="1" required
+                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="form-group">
+                            <label for="quiz" class="block text-gray-600 mb-1">
+                                Quiz Interactions (0-50)
+                            </label>
+                            <input type="number" id="quiz" name="quiz" 
+                                   min="0" max="50" value="5" step="1" required
+                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="form-group">
+                            <label for="resource" class="block text-gray-600 mb-1">
+                                Resource Interactions (0-100)
+                            </label>
+                            <input type="number" id="resource" name="resource" 
+                                   min="0" max="100" value="20" step="1" required
+                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demographic Information -->
+                <div class="form-section">
+                    <h5 class="text-lg font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-user mr-2"></i>Demographic Information
+                    </h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label for="highest_education_a_level" class="block text-gray-600 mb-1">
+                                Highest Education: A Level or Equivalent
+                            </label>
+                            <select id="highest_education_a_level" name="highest_education_a_level" required
+                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="highest_education_he" class="block text-gray-600 mb-1">
+                                Highest Education: HE Qualification
+                            </label>
+                            <select id="highest_education_he" name="highest_education_he" required
+                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="imd_band_0_10" class="block text-gray-600 mb-1">
+                                IMD Band: 0-10% (Most Deprived)
+                            </label>
+                            <select id="imd_band_0_10" name="imd_band_0_10" required
+                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="imd_band_90_100" class="block text-gray-600 mb-1">
+                                IMD Band: 90-100% (Least Deprived)
+                            </label>
+                            <select id="imd_band_90_100" name="imd_band_90_100" required
+                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="age_band_0_35" class="block text-gray-600 mb-1">
+                                Age Band: 0-35 Years
+                            </label>
+                            <select id="age_band_0_35" name="age_band_0_35" required
+                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="disability_y" class="block text-gray-600 mb-1">
+                                Disability
+                            </label>
+                            <select id="disability_y" name="disability_y" required
+                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition">
+                    Predict Outcome
+                </button>
+            </form>
+
+            <div id="result" class="mt-6 p-4 bg-green-100 text-green-800 rounded-md hidden"></div>
+            <div id="error" class="mt-6 p-4 bg-red-100 text-red-800 rounded-md hidden"></div>
         </div>
-        <div class="form-section">
-            <h4><i class="fas fa-user"></i> Demographic Information</h4>
-            <div class="form-group">
-                <label for="highest_education_a_level">Highest Education: A Level or Equivalent:</label>
-                <select id="highest_education_a_level" name="highest_education_a_level" required>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="highest_education_he">Highest Education: HE Qualification:</label>
-                <select id="highest_education_he" name="highest_education_he" required>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="imd_band_0_10">IMD Band: 0-10% (Most Deprived):</label>
-                <select id="imd_band_0_10" name="imd_band_0_10" required>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="imd_band_90_100">IMD Band: 90-100% (Least Deprived):</label>
-                <select id="imd_band_90_100" name="imd_band_90_100" required>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="age_band_0_35">Age Band: 0-35 Years:</label>
-                <select id="age_band_0_35" name="age_band_0_35" required>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="disability_y">Disability:</label>
-                <select id="disability_y" name="disability_y" required>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
+
+        <!-- Supervisor and Advisor -->
+        <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h4 class="text-xl font-semibold text-blue-600 mb-4">
+                <i class="fas fa-user-tie mr-2"></i>Supervisor and Advisor
+            </h4>
+            <p class="text-gray-600">
+                The project was developed under the guidance of:
+            </p>
+            <ul class="space-y-2 text-gray-600 mt-2">
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <strong>Main Supervisor: Dr. Chen Tee</strong> – Provided strategic oversight and expertise in educational analytics.
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <strong>Advisor: </strong>
+                    <a href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955" target="_blank" class="text-blue-600 hover:text-blue-800">
+                        Ts.Dr. Chee Ken Nee
+                    </a> – Offered technical insights into machine learning and deep learning methodologies.
+                </li>
+            </ul>
         </div>
-        <button type="submit">Predict Outcome</button>
-    </form>
-    <div id="result" class="result"></div>
-    <div id="error" class="error"></div>
-    
-    <div class="supervisor">
-        <h4><i class="fas fa-user-tie"></i> Supervisor</h4>
-        <p>This project was developed under the expert guidance of <strong>Dr. Shehzad Rizwan</strong> at COMSATS University Attock. His expertise in machine learning and educational analytics ensured the accuracy and usability of our prediction system.</p>
-    </div>
-    
-    <div class="explore">
-        <h4><i class="fas fa-compass"></i> Explore More</h4>
-        <p>Discover other features of our project:</p>
-        <ul>
-            <li><a href="/">Home</a>: Return to the main page.</li>
-            <li><a href="/graphs">View Graphs</a>: Explore data visualizations.</li>
-            <li><a href="/about">Learn More</a>: Understand the project’s methodology and goals.</li>
-        </ul>
+
+        <!-- Contributors -->
+        <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h4 class="text-xl font-semibold text-blue-600 mb-4">
+                <i class="fas fa-users mr-2"></i>Contributors
+            </h4>
+            <p class="text-gray-600">
+                The project team includes:
+            </p>
+            <ul class="space-y-2 text-gray-600 mt-2">
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="https://scholar.google.com/citations?user=pewLS_oAAAAJ&hl=en" target="_blank" class="text-blue-600 hover:text-blue-800">
+                        Shahzad Rizwan
+                    </a> – Contributed to model development and web implementation.
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    Hammad Nawaz – Supported data processing and system integration.
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h4 class="text-xl font-semibold text-blue-600 mb-4">
+                <i class="fas fa-envelope mr-2"></i>Contact
+            </h4>
+            <p class="text-gray-600">
+                For inquiries, please contact:
+            </p>
+            <ul class="space-y-2 text-gray-600 mt-2">
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="mailto:p20232002567@siswa.upsi.edu.my" class="text-blue-600 hover:text-blue-800">
+                        p20232002567@siswa.upsi.edu.my
+                    </a> (Shahzad Rizwan)
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="mailto:hammadkhan3923@gmail.com" class="text-blue-600 hover:text-blue-800">
+                        hammadkhan3923@gmail.com
+                    </a> (Hammad Nawaz)
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="mailto:cheekennee@meta.upsi.edu.my" class="text-blue-600 hover:text-blue-800">
+                        cheekennee@meta.upsi.edu.my
+                    </a> (Ts.Dr. Chee Ken Nee)
+                </li>
+            </ul>
+        </div>
+
+        <!-- Explore More -->
+        <div class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h4 class="text-xl font-semibold text-blue-600 mb-4">
+                <i class="fas fa-compass mr-2"></i>Explore More
+            </h4>
+            <p class="text-gray-600">
+                Discover other features of our project:
+            </p>
+            <ul class="space-y-2 text-gray-600 mt-2">
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="/" class="text-blue-600 hover:text-blue-800">Home</a>: Return to the main page.
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="/graphs" class="text-blue-600 hover:text-blue-800">View Graphs</a>: Explore data visualizations.
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="/model" class="text-blue-600 hover:text-blue-800">Model Details</a>: Learn about the CNN+LSTM model.
+                </li>
+                <li class="flex items-start">
+                    <span class="text-blue-600 mr-2">◆</span>
+                    <a href="/about" class="text-blue-600 hover:text-blue-800">About</a>: Understand the project’s methodology and goals.
+                </li>
+            </ul>
+        </div>
     </div>
 </section>
 {% endblock %}
