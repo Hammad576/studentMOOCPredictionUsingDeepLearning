@@ -43,12 +43,11 @@ class CNNLSTM(nn.Module):
 try:
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = CNNLSTM(num_classes=4).to(device)
-    state_dict = torch.load('model/student_prediction_model.pth', map_location=device)
-    model.load_state_dict(state_dict, strict=True)
+    model.load_state_dict(torch.load('model/student_prediction_model.pth', map_location=device))
     model.eval()
     scaler = joblib.load('model/scaler.pkl')
     logging.info("Model and scaler loaded successfully")
-    # Test model with dummy input
+    # Test model
     test_input = torch.zeros(1, 1, 12, dtype=torch.float32).to(device)
     with torch.no_grad():
         test_output = model(test_input)
@@ -57,11 +56,11 @@ except Exception as e:
     logging.error(f"Error loading model or scaler: {e}", exc_info=True)
     raise
 
-# Input feature names and ranges
+# Input feature names and ranges (matched to scaler fit)
 FEATURES = [
     'num_of_prev_attempts', 'studied_credits', 'forumng', 'oucontent', 'quiz', 'resource',
-    'highest_education_a_level', 'highest_education_he', 'imd_band_0_10', 'imd_band_90_100',
-    'age_band_0_35', 'disability_y'
+    'highest_education_A Level or Equivalent', 'highest_education_HE Qualification',
+    'imd_band_0-10%', 'imd_band_90-100%', 'age_band_0-35', 'disability_Y'
 ]
 RANGES = {
     'num_of_prev_attempts': (0, 5),
@@ -70,12 +69,12 @@ RANGES = {
     'oucontent': (0, 200),
     'quiz': (0, 50),
     'resource': (0, 100),
-    'highest_education_a_level': (0, 1),
-    'highest_education_he': (0, 1),
-    'imd_band_0_10': (0, 1),
-    'imd_band_90_100': (0, 1),
-    'age_band_0_35': (0, 1),
-    'disability_y': (0, 1)
+    'highest_education_A Level or Equivalent': (0, 1),
+    'highest_education_HE Qualification': (0, 1),
+    'imd_band_0-10%': (0, 1),
+    'imd_band_90-100%': (0, 1),
+    'age_band_0-35': (0, 1),
+    'disability_Y': (0, 1)
 }
 
 # Load dataset for graphs
@@ -236,6 +235,13 @@ def predict():
         
         logging.debug(f"Scaled inputs: {inputs_scaled}")
         
+        # Verify model is callable
+        if not callable(model):
+            logging.error("Model is not callable")
+            return jsonify({'error': 'Model is not callable'}), 500
+        logging.debug(f"Model type: {type(model)}, Callable: {callable(model)}")
+        
+        # Model inference
         with torch.no_grad():
             outputs = model(inputs_tensor)
             probabilities = torch.softmax(outputs, dim=1)
