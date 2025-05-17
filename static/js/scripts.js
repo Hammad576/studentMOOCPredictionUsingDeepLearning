@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 'resource': [0, 100],
                 'highest_education_A Level or Equivalent': [0, 1],
                 'highest_education_HE Qualification': [0, 1],
-                'imd_band_0_10': [0, 1],
-                'imd_band_90_100': [0, 1],
-                'age_band_0_35': [0, 1],
-                'disability_y': [0, 1]
+                'imd_band_0-10%': [0, 1],
+                'imd_band_90-100%': [0, 1],
+                'age_band_0-35': [0, 1],
+                'disability_Y': [0, 1]
             };
 
             for (const input of form.elements) {

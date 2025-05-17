@@ -14,7 +14,12 @@
                 <i class="fas fa-lightbulb mr-2"></i>Why Predict Outcomes?
             </h4>
             <p class="text-gray-600 leading-relaxed">
-                The <strong>Design and Development of a Hybrid Deep Learning Model for Student Performance Prediction in MOOCs: Integrating Optimized Feature Selection</strong> enables educators to forecast student performance in Massive Open Online Courses (MOOCs). Using a hybrid CNN+LSTM model, the system analyzes academic, engagement, and demographic data to predict outcomes (Pass, Fail, Withdrawn, Distinction). This tool helps identify at-risk students early, supporting timely interventions to enhance success rates.
+                The <strong>Design and Development of a Hybrid Deep Learning Model for Student Performance Prediction in
+                    MOOCs: Integrating Optimized Feature Selection</strong> enables educators to forecast student
+                performance in Massive Open Online Courses (MOOCs). Using a hybrid CNN+LSTM model, the system analyzes
+                academic, engagement, and demographic data to predict outcomes (Pass, Fail, Withdrawn, Distinction).
+                This tool helps identify at-risk students early, supporting timely interventions to enhance success
+                rates.
             </p>
         </div>
 
@@ -34,17 +39,17 @@
                             <label for="num_of_prev_attempts" class="block text-gray-600 mb-1">
                                 Number of Previous Attempts (0-5)
                             </label>
-                            <input type="number" id="num_of_prev_attempts" name="num_of_prev_attempts" 
-                                   min="0" max="5" value="0" step="1" required
-                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="num_of_prev_attempts" name="num_of_prev_attempts" min="0" max="5"
+                                value="0" step="1" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
                             <label for="studied_credits" class="block text-gray-600 mb-1">
                                 Studied Credits (30-200)
                             </label>
-                            <input type="number" id="studied_credits" name="studied_credits" 
-                                   min="30" max="200" value="60" step="10" required
-                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="studied_credits" name="studied_credits" min="30" max="200"
+                                value="60" step="10" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                 </div>
@@ -59,33 +64,32 @@
                             <label for="forumng" class="block text-gray-600 mb-1">
                                 Forum Interactions (0-100)
                             </label>
-                            <input type="number" id="forumng" name="forumng" 
-                                   min="0" max="100" value="10" step="1" required
-                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="forumng" name="forumng" min="0" max="100" value="10" step="1"
+                                required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
                             <label for="oucontent" class="block text-gray-600 mb-1">
                                 Content Interactions (0-200)
                             </label>
-                            <input type="number" id="oucontent" name="oucontent" 
-                                   min="0" max="200" value="50" step="1" required
-                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="oucontent" name="oucontent" min="0" max="200" value="50" step="1"
+                                required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
                             <label for="quiz" class="block text-gray-600 mb-1">
                                 Quiz Interactions (0-50)
                             </label>
-                            <input type="number" id="quiz" name="quiz" 
-                                   min="0" max="50" value="5" step="1" required
-                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="quiz" name="quiz" min="0" max="50" value="5" step="1" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
                             <label for="resource" class="block text-gray-600 mb-1">
                                 Resource Interactions (0-100)
                             </label>
-                            <input type="number" id="resource" name="resource" 
-                                   min="0" max="100" value="20" step="1" required
-                                   class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="resource" name="resource" min="0" max="100" value="20" step="1"
+                                required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                 </div>
@@ -100,8 +104,9 @@
                             <label for="highest_education_a_level" class="block text-gray-600 mb-1">
                                 Highest Education: A Level or Equivalent
                             </label>
-                            <select id="highest_education_a_level" name="highest_education_A Level or Equivalent" required
-                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <select id="highest_education_a_level" name="highest_education_A Level or Equivalent"
+                                required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
                             </select>
@@ -111,7 +116,7 @@
                                 Highest Education: HE Qualification
                             </label>
                             <select id="highest_education_he" name="highest_education_HE Qualification" required
-                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
                             </select>
@@ -120,8 +125,8 @@
                             <label for="imd_band_0_10" class="block text-gray-600 mb-1">
                                 IMD Band: 0-10% (Most Deprived)
                             </label>
-                            <select id="imd_band_0_10" name="imd_band_0_10" required
-                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <select id="imd_band_0_10" name="imd_band_0-10%" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
                             </select>
@@ -130,8 +135,8 @@
                             <label for="imd_band_90_100" class="block text-gray-600 mb-1">
                                 IMD Band: 90-100% (Least Deprived)
                             </label>
-                            <select id="imd_band_90_100" name="imd_band_90_100" required
-                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <select id="imd_band_90_100" name="imd_band_90-100%" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
                             </select>
@@ -140,8 +145,8 @@
                             <label for="age_band_0_35" class="block text-gray-600 mb-1">
                                 Age Band: 0-35 Years
                             </label>
-                            <select id="age_band_0_35" name="age_band_0_35" required
-                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <select id="age_band_0_35" name="age_band_0-35" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>
@@ -150,8 +155,8 @@
                             <label for="disability_y" class="block text-gray-600 mb-1">
                                 Disability
                             </label>
-                            <select id="disability_y" name="disability_y" required
-                                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                            <select id="disability_y" name="disability_Y" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
                             </select>
@@ -159,7 +164,8 @@
                     </div>
                 </div>
 
-                <button type="submit" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition">
+                <button type="submit"
+                    class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition">
                     Predict Outcome
                 </button>
             </form>
@@ -179,12 +185,14 @@
             <ul class="space-y-2 text-gray-600 mt-2">
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
-                    <strong>Main Supervisor: Dr. Chen Tee</strong> – Provided strategic oversight and expertise in educational analytics.
+                    <strong>Main Supervisor: Dr. Chen Tee</strong> – Provided strategic oversight and expertise in
+                    educational analytics.
                 </li>
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
                     <strong>Advisor: </strong>
-                    <a href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955" target="_blank" class="text-blue-600 hover:text-blue-800">
+                    <a href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955" target="_blank"
+                        class="text-blue-600 hover:text-blue-800">
                         Ts.Dr. Chee Ken Nee
                     </a> – Offered technical insights into machine learning and deep learning methodologies.
                 </li>
@@ -202,7 +210,8 @@
             <ul class="space-y-2 text-gray-600 mt-2">
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
-                    <a href="https://scholar.google.com/citations?user=pewLS_oAAAAJ&hl=en" target="_blank" class="text-blue-600 hover:text-blue-800">
+                    <a href="https://scholar.google.com/citations?user=pewLS_oAAAAJ&hl=en" target="_blank"
+                        class="text-blue-600 hover:text-blue-800">
                         Shahzad Rizwan
                     </a> – Contributed to model development and web implementation.
                 </li>
@@ -258,15 +267,18 @@
                 </li>
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
-                    <a href="/graphs" class="text-blue-600 hover:text-blue-800">View Graphs</a>: Explore data visualizations.
+                    <a href="/graphs" class="text-blue-600 hover:text-blue-800">View Graphs</a>: Explore data
+                    visualizations.
                 </li>
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
-                    <a href="/model" class="text-blue-600 hover:text-blue-800">Model Details</a>: Learn about the CNN+LSTM model.
+                    <a href="/model" class="text-blue-600 hover:text-blue-800">Model Details</a>: Learn about the
+                    CNN+LSTM model.
                 </li>
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
-                    <a href="/about" class="text-blue-600 hover:text-blue-800">About</a>: Understand the project’s methodology and goals.
+                    <a href="/about" class="text-blue-600 hover:text-blue-800">About</a>: Understand the project’s
+                    methodology and goals.
                 </li>
             </ul>
         </div>
