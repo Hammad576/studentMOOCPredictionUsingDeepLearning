@@ -67,15 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Pass data through URL parameters
                     const params = new URLSearchParams({
                         prediction: data.prediction,
-                        confidence: data.confidence || 85.3 // Use actual confidence from your model
+                        confidence: data.confidence || 0.85
                     });
 
                     window.open(`/result?${params}`, '_blank');
+                    resultDiv.textContent = 'Prediction submitted successfully. Check the new tab.';
+                    resultDiv.classList.remove('hidden');
                 } else {
                     errorDiv.textContent = data.error;
+                    errorDiv.classList.remove('hidden');
                 }
             } catch (err) {
                 errorDiv.textContent = 'An error occurred. Please try again.';
+                errorDiv.classList.remove('hidden');
             }
         });
     }

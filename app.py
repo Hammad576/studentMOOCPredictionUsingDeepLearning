@@ -5,8 +5,12 @@ import numpy as np
 import joblib
 import pandas as pd
 import os
+import logging
 
 app = Flask(__name__)
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Define the CNN+LSTM model
 class CNNLSTM(nn.Module):
@@ -21,6 +25,7 @@ class CNNLSTM(nn.Module):
         self.dropout = nn.Dropout(0.3)
     
     def forward(self, x):
+        logging.debug(f"Input shape to forward: {x.shape}")
         x = self.conv1(x)
         x = self.relu(x)
         x = self.pool(x)
@@ -31,16 +36,28 @@ class CNNLSTM(nn.Module):
         x = self.relu(x)
         x = self.dropout(x)
         x = self.fc2(x)
+        logging.debug(f"Output shape from forward: {x.shape}")
         return x
 
 # Load model and scaler
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = CNNLSTM(num_classes=4).to(device)
-model.load_state_dict(torch.load('model/student_prediction_model.pth'))
-model.eval()
-scaler = joblib.load('model/scaler.pkl')
+try:
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = CNNLSTM(num_classes=4).to(device)
+    state_dict = torch.load('model/student_prediction_model.pth', map_location=device)
+    model.load_state_dict(state_dict, strict=True)
+    model.eval()
+    scaler = joblib.load('model/scaler.pkl')
+    logging.info("Model and scaler loaded successfully")
+    # Test model with dummy input
+    test_input = torch.zeros(1, 1, 12, dtype=torch.float32).to(device)
+    with torch.no_grad():
+        test_output = model(test_input)
+    logging.info(f"Model test output shape: {test_output.shape}")
+except Exception as e:
+    logging.error(f"Error loading model or scaler: {e}", exc_info=True)
+    raise
 
-# Input feature names and ranges for validation
+# Input feature names and ranges
 FEATURES = [
     'num_of_prev_attempts', 'studied_credits', 'forumng', 'oucontent', 'quiz', 'resource',
     'highest_education_a_level', 'highest_education_he', 'imd_band_0_10', 'imd_band_90_100',
@@ -65,15 +82,13 @@ RANGES = {
 def load_dataset():
     try:
         df = pd.read_csv('data/reduced_dataset.csv')
+        logging.info("Dataset loaded successfully")
         
-        # Calculate feature means
         feature_means = df[['num_of_prev_attempts', 'studied_credits', 'forumng', 
                            'oucontent', 'quiz', 'resource']].mean().to_dict()
         
-        # Calculate outcome distribution
         outcome_counts = df['final_result'].value_counts().to_dict()
         
-        # Calculate gender-based outcomes
         gender_counts = {
             'female_pass': len(df[(df['gender_F'] == 1) & (df['final_result'] == 'Pass')]),
             'female_fail': len(df[(df['gender_F'] == 1) & (df['final_result'] == 'Fail')]),
@@ -92,7 +107,7 @@ def load_dataset():
         }
         
     except Exception as e:
-        print(f"Error loading dataset: {e}")
+        logging.error(f"Error loading dataset: {e}")
         return {
             'feature_means': {
                 'num_of_prev_attempts': 0.5,
@@ -147,36 +162,54 @@ def serve_data():
 @app.route('/result')
 def result():
     prediction = request.args.get('prediction', 'Unknown')
-    # Add actual confidence calculation from your model
-    confidence = round(np.random.uniform(75, 95), 1)  # Replace with real confidence
+    confidence = request.args.get('confidence', '0.85')
     
     advice_mapping = {
         'Pass': {
             'title': 'Great Job! Keep it Up',
             'tips': [
-                'Maintain current study routine',
-                'Continue forum participation',
-                'Complete quizzes on time',
-                'Regular material reviews'
+                'Maintain your current study routine.',
+                'Continue active participation in forums.',
+                'Complete quizzes and assignments on time.',
+                'Review course materials regularly.'
             ]
         },
         'Fail': {
             'title': 'Improvement Suggestions',
             'tips': [
-                'Increase study time',
-                'Participate in forums',
-                'Review failed quizzes',
-                'Create study schedule'
+                'Increase dedicated study time.',
+                'Engage more in forum discussions.',
+                'Review and retake failed quizzes.',
+                'Create a structured study schedule.'
             ]
         },
-        # Add other mappings
+        'Withdrawn': {
+            'title': 'Stay Engaged',
+            'tips': [
+                'Reconnect with course materials.',
+                'Seek support from instructors or peers.',
+                'Set achievable weekly goals.',
+                'Use available resources actively.'
+            ]
+        },
+        'Distinction': {
+            'title': 'Outstanding Performance!',
+            'tips': [
+                'Share insights in forums to help peers.',
+                'Explore advanced course topics.',
+                'Maintain high engagement levels.',
+                'Consider mentoring others.'
+            ]
+        }
     }
     
-    return render_template('result.html',
-                         prediction_result=prediction,
-                         confidence=confidence,
-                         advice=advice_mapping.get(prediction, {}))
-                         
+    return render_template(
+        'result.html',
+        prediction_result=prediction,
+        confidence=float(confidence) * 100,  # Convert to percentage
+        advice=advice_mapping.get(prediction, {'title': 'Unknown Outcome', 'tips': []})
+    )
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -184,29 +217,41 @@ def predict():
         for feature in FEATURES:
             value = request.form.get(feature)
             if value is None or value == '':
+                logging.error(f"Missing field: {feature}")
                 return jsonify({'error': f'Missing field: {feature}'}), 400
             try:
                 value = float(value)
             except ValueError:
+                logging.error(f"Invalid value for {feature}: {value}")
                 return jsonify({'error': f'Invalid value for {feature}: must be numeric'}), 400
             min_val, max_val = RANGES[feature]
             if not (min_val <= value <= max_val):
+                logging.error(f"Value out of range for {feature}: {value}")
                 return jsonify({'error': f'{feature} must be between {min_val} and {max_val}'}), 400
             inputs.append(value)
         
         inputs = np.array(inputs, dtype=np.float32).reshape(1, -1)
-        inputs = scaler.transform(inputs)
-        inputs = torch.tensor(inputs.reshape(1, 1, 12), dtype=torch.float32).to(device)
+        inputs_scaled = scaler.transform(inputs)
+        inputs_tensor = torch.tensor(inputs_scaled.reshape(1, 1, 12), dtype=torch.float32).to(device)
+        
+        logging.debug(f"Scaled inputs: {inputs_scaled}")
         
         with torch.no_grad():
-            outputs = model(inputs)
-            _, predicted = torch.max(outputs, 1)
+            outputs = model(inputs_tensor)
+            probabilities = torch.softmax(outputs, dim=1)
+            confidence, predicted = torch.max(probabilities, 1)
             classes = ['Fail', 'Pass', 'Withdrawn', 'Distinction']
             prediction = classes[predicted.item()]
         
-        return jsonify({'prediction': prediction})
+        logging.info(f"Prediction: {prediction}, Confidence: {confidence.item()}")
+        
+        return jsonify({
+            'prediction': prediction,
+            'confidence': confidence.item()
+        })
     
     except Exception as e:
+        logging.error(f"Prediction error: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
