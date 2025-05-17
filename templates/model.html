@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Model - Student Outcome Prediction{% endblock %}
+{% block content %}
+<section class="container mx-auto px-4 py-8">
+    <h3 class="text-2xl font-bold text-gray-800 mb-4">CNN+LSTM Model Overview</h3>
+    <p class="text-gray-600 mb-6">Learn about the hybrid CNN+LSTM model used to predict student outcomes based on academic and engagement features.</p>
+    
+    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+        <h4 class="text-xl font-semibold text-gray-700 mb-4">Model Architecture</h4>
+        <p class="text-gray-600 mb-4">
+            The model combines a Convolutional Neural Network (CNN) and a Long Short-Term Memory (LSTM) network to process 12 input features, such as previous attempts, studied credits, and engagement metrics (forumng, oucontent, quiz, resource). The CNN extracts spatial patterns, while the LSTM captures temporal dependencies, making it suitable for sequential student data.
+        </p>
+        <ul class="list-disc list-inside text-gray-600">
+            <li><strong>Input Layer</strong>: 12 features, reshaped to (1, 12) for 1D convolution.</li>
+            <li><strong>Conv1D</strong>: 16 filters, kernel size 3, padding 1, followed by ReLU and MaxPooling (kernel size 2).</li>
+            <li><strong>LSTM</strong>: 32 hidden units, 1 layer, batch-first, processing the reshaped CNN output.</li>
+            <li><strong>Fully Connected Layers</strong>: 32 → 64 (ReLU, Dropout 0.3) → 4 output classes (Fail, Pass, Withdrawn, Distinction).</li>
+        </ul>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+        <h4 class="text-xl font-semibold text-gray-700 mb-4">Training Process</h4>
+        <p class="text-gray-600 mb-4">
+            The model was trained on a reduced dataset with features normalized using StandardScaler. It uses the Adam optimizer and Cross-Entropy Loss, with a dropout rate of 0.3 to prevent overfitting. Training metrics are visualized below.
+        </p>
+        <!-- Graph Placeholders -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h5 class="text-lg font-semibold text-gray-700 mb-2">Training Loss</h5>
+                <div class="relative h-80">
+                    <canvas id="lossChart"></canvas>
+                </div>
+            </div>
+            <div>
+                <h5 class="text-lg font-semibold text-gray-700 mb-2">Training Accuracy</h5>
+                <div class="relative h-80">
+                    <canvas id="accuracyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h4 class="text-xl font-semibold text-gray-700 mb-4">Feature Importance</h4>
+        <p class="text-gray-600 mb-4">
+            The chart below illustrates the relative importance of input features, derived from model weights and feature correlations, to understand which factors most influence predictions.
+        </p>
+        <div class="relative h-80">
+            <canvas id="featureImportanceChart"></canvas>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Custom Model Graph Script -->
+<script src="/static/js/model.js"></script>
+{% endblock %}

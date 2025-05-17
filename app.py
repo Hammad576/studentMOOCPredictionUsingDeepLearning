@@ -60,20 +60,7 @@ RANGES = {
     'age_band_0_35': (0, 1),
     'disability_y': (0, 1)
 }
-#*  data: [
-                     #   data.gender_counts.female_pass,
-                    #    data.gender_counts.female_fail,
-                   #     data.gender_counts.female_distinction,
-                  #      data.gender_counts.female_withdrawn
-                 #   ],
-                #    backgroundColor: '#ff6384'
-               # }, {
-                   # label: 'Male',
-                   # data: [
-                        #data.gender_counts.male_pass,
-                       # data.gender_counts.male_fail,
-                      #  data.gender_counts.male_distinction,
-                     #   data.gender_counts.male_withdrawn
+
 # Load dataset for graphs
 def load_dataset():
     try:
@@ -140,7 +127,10 @@ def home():
 @app.route('/graphs')
 def graphs():
     return render_template('graphs.html')
-    
+
+@app.route('/model')
+def model():
+    return render_template('model.html')
 
 @app.route('/prediction')
 def prediction():
