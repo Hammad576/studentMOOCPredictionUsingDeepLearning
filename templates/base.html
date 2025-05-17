@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Student Outcome Prediction{% endblock %}</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts: Open Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             background: linear-gradient(120deg, #eef2f7 0%, #d9e2f0 100%);
@@ -18,70 +23,81 @@
         }
 
         header {
-            text-align: center;
             background: linear-gradient(90deg, #4a90e2, #63b3ed);
-            padding: 20px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            color: #fff;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: #ffffff;
+            text-align: center;
         }
 
         nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 15px;
             display: flex;
             justify-content: center;
-            gap: 25px;
-        }
-
-        nav ul li {
-            margin: 0;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            padding: 0;
+            margin: 0 0 1rem;
+            list-style: none;
         }
 
         nav ul li a {
-            color: #fff;
+            color: #ffffff;
             text-decoration: none;
-            font-size: 18px;
-            padding: 10px 16px;
-            border-radius: 8px;
-            transition: background 0.3s ease, transform 0.2s ease;
+            font-size: 1.125rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         nav ul li a:hover, nav ul li a.active {
             background: #2b6cb0;
             transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         header h1 {
-            margin: 0;
-            font-size: 30px;
+            font-size: 1.875rem;
             font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
         }
 
         header h2 {
-            margin: 8px 0 0;
-            font-size: 26px;
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 0.5rem 0 0;
+            color: #f7fafc;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        header h2 a {
+            color: #e6f0fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        header h2 a:hover {
+            color: #bee3f8;
         }
 
         main {
             flex: 1;
             max-width: 1400px;
-            margin: 20px auto;
-            padding: 0 15px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         footer {
-            text-align: center;
-            padding: 16px;
             background: linear-gradient(90deg, #4a90e2, #63b3ed);
-            color: #fff;
-            margin-top: auto;
+            color: #ffffff;
+            padding: 1.5rem 1rem;
             box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+            text-align: center;
         }
 
         footer .footer-content {
@@ -90,54 +106,106 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 0.75rem;
         }
 
         footer p {
-            margin: 0;
-            font-size: 18px;
+            font-size: 1.125rem;
             font-weight: 500;
+            margin: 0;
             line-height: 1.5;
+        }
+
+        footer .advisor-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        footer .advisor-link:hover {
+            background: #2b6cb0;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         footer .social-links {
             display: flex;
-            gap: 12px;
+            gap: 1rem;
         }
 
         footer .social-links a {
-            color: #fff;
-            font-size: 24px;
+            color: #ffffff;
+            font-size: 1.5rem;
             transition: color 0.3s ease, transform 0.2s ease;
         }
 
         footer .social-links a:hover {
-            color: #1e4976;
+            color: #bee3f8;
             transform: scale(1.2);
         }
 
-        @media (max-width: 600px) {
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
             nav ul {
                 flex-direction: column;
-                gap: 10px;
+                gap: 0.75rem;
             }
+
             header h1 {
-                font-size: 22px;
+                font-size: 1.5rem;
             }
+
             header h2 {
-                font-size: 18px;
+                font-size: 1.25rem;
             }
+
             main {
-                padding: 0 5px;
+                margin: 1rem auto;
+                padding: 0 0.5rem;
             }
+
             footer {
-                padding: 11px;
+                padding: 1rem;
             }
-            footer .footer-content {
-                gap: 8px;
+
+            footer p {
+                font-size: 1rem;
             }
+
+            footer .advisor-link {
+                font-size: 1rem;
+                padding: 0.25rem 0.5rem;
+            }
+
             footer .social-links a {
-                font-size: 20px;
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            header h2 {
+                font-size: 1rem;
+            }
+
+            nav ul li a {
+                font-size: 1rem;
+                padding: 0.5rem;
+            }
+
+            footer .advisor-link {
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -154,7 +222,7 @@
             </ul>
         </nav>
         <h1>Student Outcome Prediction</h1>
-        <h2><a target="_blank" href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955">advisor: Ts.Dr.Chee Ken Nee</a> </h2>
+        <h2><a target="_blank" href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955">Advisor: Ts.Dr.Chee Ken Nee</a></h2>
     </header>
     <main>
         {% block content %}
@@ -163,7 +231,7 @@
     <footer>
         <div class="footer-content">
             <p>© 2025 Student Outcome Prediction Project, COMSATS University Attock</p>
-            <p>Developed under the supervision of Project advisor: Ts.Dr.Chee Ken Nee</p>
+            <p>Developed under the supervision of Project Advisor: <a href="https://directory.upsi.edu.my/experts/profile/02E6AC7CD9D14955" target="_blank" class="advisor-link">Ts.Dr.Chee Ken Nee</a></p>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/shehzad-rizwan-19a1b632/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="https://www.facebook.com/shehzadRizwan" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
