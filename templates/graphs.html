@@ -3,61 +3,54 @@
 {% block content %}
 <section class="container mx-auto px-4 py-8">
     <h3 class="text-2xl font-bold text-gray-800 mb-4">Data Visualizations</h3>
-    <p class="text-gray-600 mb-6">Explore the distribution of key features and student outcomes from the dataset.</p>
-
+    <p class="text-gray-600 mb-6">Explore key insights from the student dataset through the visualizations below.</p>
+    
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Feature Means Bar Chart -->
+        <!-- Chart 1: Feature Distribution -->
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h4 class="text-xl font-semibold text-gray-700 mb-4">Feature Averages</h4>
+            <h4 class="text-xl font-semibold text-gray-700 mb-4">Feature Means</h4>
             <div class="relative h-80">
                 <canvas id="featureChart" class="w-full h-full"></canvas>
             </div>
         </div>
-
-        <!-- Outcome Distribution Pie Chart -->
+        
+        <!-- Chart 2: Outcome Distribution -->
         <div class="bg-white shadow-md rounded-lg p-6">
             <h4 class="text-xl font-semibold text-gray-700 mb-4">Outcome Distribution</h4>
             <div class="relative h-80">
                 <canvas id="outcomeChart" class="w-full h-full"></canvas>
             </div>
         </div>
-
-        <!-- Outcome Distribution Doughnut Chart -->
+        
+        <!-- Chart 3: Outcome Distribution Alternate -->
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h4 class="text-xl font-semibold text-gray-700 mb-4">Outcome Breakdown</h4>
+            <h4 class="text-xl font-semibold text-gray-700 mb-4">Outcome Distribution (Alternate)</h4>
             <div class="relative h-80">
                 <canvas id="outcomeChart2" class="w-full h-full"></canvas>
             </div>
         </div>
-
-        <!-- Feature Trends Line Chart -->
+        
+        <!-- Chart 4: Feature Trends -->
         <div class="bg-white shadow-md rounded-lg p-6">
             <h4 class="text-xl font-semibold text-gray-700 mb-4">Feature Trends</h4>
             <div class="relative h-80">
                 <canvas id="lineChart" class="w-full h-full"></canvas>
             </div>
         </div>
-
-        <!-- Polar Area Chart -->
+        
+        <!-- Chart 5: Outcome Distribution -->
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h4 class="text-xl font-semibold text-gray-700 mb-4">Outcome Polar View</h4>
+            <h4 class="text-xl font-semibold text-gray-700 mb-4">Outcome Counts</h4>
             <div class="relative h-80">
                 <canvas id="polarChart" class="w-full h-full"></canvas>
             </div>
         </div>
-
-        <!-- Radar Chart -->
+        
+        <!-- Chart 6: Gender Comparison -->
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h4 class="text-xl font-semibold text-gray-700 mb-4">Feature Radar Analysis</h4>
+            <h4 class="text-xl font-semibold text-gray-700 mb-4">Gender vs. Outcome</h4>
             <div class="relative h-80">
-                <canvas id="radarChart" class="w-full h-full"></canvas>
-            </div>
-        </div>
-
-        <div class="bg-white shadow-md rounded-lg p-6">
-            <h4 class="text-xl font-semibold text-gray-700 mb-4">Gender Outcome Comparison</h4>
-            <div class="relative h-80">
-                <canvas id="genderChart"></canvas>
+                <canvas id="genderChart" class="w-full h-full"></canvas>
             </div>
         </div>
     </div>
