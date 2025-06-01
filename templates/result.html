@@ -18,44 +18,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const adviceMap = {
         'Pass': {
-            title: 'Outstanding Performance',
+            title: 'Great Job! Keep it Up',
             tips: [
-                'Maintain consistent study habits',
-                'Continue active forum engagement',
-                'Complete assessments promptly'
+                'Maintain your current study routine.',
+                'Continue active participation in forums.',
+                'Complete quizzes and assignments on time.',
+                'Review course materials regularly.'
             ],
             color: 'bg-green-50 border-l-8 border-green-600',
             icon: 'check-circle',
             iconColor: 'green-600'
         },
         'Fail': {
-            title: 'Academic Improvement Needed',
+            title: 'Improvement Suggestions',
             tips: [
-                'Increase study time by 20%',
-                'Participate in 3+ weekly discussions',
-                'Review previous assessments'
+                'Increase dedicated study time.',
+                'Engage more in forum discussions.',
+                'Review and retake failed quizzes.',
+                'Create a structured study schedule.'
             ],
             color: 'bg-red-50 border-l-8 border-red-600',
             icon: 'exclamation-triangle',
             iconColor: 'red-600'
         },
         'Withdrawn': {
-            title: 'Support Intervention Recommended',
+            title: 'Stay Engaged',
             tips: [
-                'Schedule advisor consultation',
-                'Explore academic resources',
-                'Develop time management plan'
+                'Reconnect with course materials.',
+                'Seek support from instructors or peers.',
+                'Set achievable weekly goals.',
+                'Use available resources actively.'
             ],
             color: 'bg-amber-50 border-l-8 border-amber-600',
             icon: 'user-times',
             iconColor: 'amber-600'
         },
         'Distinction': {
-            title: 'Exemplary Achievement',
+            title: 'Outstanding Performance!',
             tips: [
-                'Mentor peers in study groups',
-                'Explore advanced course materials',
-                'Provide course feedback'
+                'Share insights in forums to help peers.',
+                'Explore advanced course topics.',
+                'Maintain high engagement levels.',
+                'Consider mentoring others.'
             ],
             color: 'bg-teal-50 border-l-8 border-teal-600',
             icon: 'trophy',
@@ -67,13 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (prediction && adviceMap[prediction]) {
         const advice = adviceMap[prediction];
+        const confidencePercent = confidence ? (parseFloat(confidence) * 100).toFixed(2) : 'N/A';
         resultContent.innerHTML = `
             <div class="${advice.color} p-8 mb-8 rounded-xl shadow-sm">
                 <div class="flex items-center gap-4 mb-4">
                     <i class="fas fa-${advice.icon} text-4xl text-${advice.iconColor}"></i>
                     <h2 class="text-3xl font-bold text-gray-800">${prediction} Outcome</h2>
                 </div>
-                ${confidence ? `<p class="text-lg text-gray-600 font-medium">Confidence Level: ${confidence}%</p>` : ''}
+                <p class="text-lg text-gray-600 font-medium">Confidence Level: ${confidencePercent}%</p>
             </div>
             
             <div class="bg-gray-50 p-6 rounded-xl shadow-inner">

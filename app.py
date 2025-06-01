@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+ 
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import torch
 import torch.nn as nn
 import numpy as np
@@ -142,8 +143,53 @@ def graphs():
 def model_page():
     return render_template('model.html')
 
-@app.route('/prediction')
+@app.route('/prediction', methods=['GET'])
 def prediction():
+    if request.args:
+        try:
+            # Extract and validate query parameters
+            inputs = {}
+            for feature in FEATURES:
+                value = request.args.get(feature)
+                if value is None or value == '':
+                    logging.error(f"Missing field: {feature}")
+                    return jsonify({'error': f'Missing field: {feature}'}), 400
+                try:
+                    value = float(value)
+                except ValueError:
+                    logging.error(f"Invalid value for {feature}: {value}")
+                    return jsonify({'error': f'Invalid value for {feature}: must be numeric'}), 400
+                min_val, max_val = RANGES[feature]
+                if not (min_val <= value <= max_val):
+                    logging.error(f"Value out of range for {feature}: {value}")
+                    return jsonify({'error': f'{feature} must be between {min_val} and {max_val}'}), 400
+                inputs[feature] = value
+            
+            # Preprocess inputs
+            df = pd.DataFrame([inputs])
+            numerical = df[NUMERICAL_FEATURES].apply(lambda x: np.log1p(x - x.min()) if x.min() < 0 else np.log1p(x))
+            numerical_scaled = scaler.transform(numerical)
+            binary = df[[f for f in FEATURES if f not in NUMERICAL_FEATURES]].values
+            inputs_scaled = np.hstack([numerical_scaled, binary]).astype(np.float32)
+            inputs_tensor = torch.tensor(inputs_scaled, dtype=torch.float32).to(device)
+            
+            # Predict
+            with torch.no_grad():
+                outputs = model(inputs_tensor)
+                probabilities = torch.softmax(outputs, dim=1)
+                confidence, predicted = torch.max(probabilities, 1)
+                prediction = label_encoder.inverse_transform(predicted.cpu().numpy())[0]
+                confidence_value = confidence.item()
+            
+            logging.info(f"Prediction: {prediction}, Confidence: {confidence_value}")
+            
+            # Redirect to result.html
+            return redirect(url_for('result', prediction=prediction, confidence=confidence_value))
+        
+        except Exception as e:
+            logging.error(f"Prediction error: {e}", exc_info=True)
+            return jsonify({'error': str(e)}), 500
+    
     return render_template('prediction.html')
 
 @app.route('/about')
@@ -252,3 +298,4 @@ def predict():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+ 

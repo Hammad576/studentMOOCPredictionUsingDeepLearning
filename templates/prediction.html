@@ -202,9 +202,9 @@
                     </div>
                 </div>
 
-                <button type="submit"
+                <button type="submit" id="predict-button"
                     class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition">
-                    Predict Outcome
+                    Make Prediction
                 </button>
             </form>
 
@@ -322,6 +322,18 @@
         </div>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('prediction-form');
+    const button = document.getElementById('predict-button');
+    if (form && button) {
+        form.addEventListener('submit', () => {
+            button.disabled = true;
+            button.textContent = 'Submitting...';
+        });
+    }
+});
+</script>
 {% endblock %}
 {% block scripts %}
 <script src="/static/js/prediction.js"></script>
