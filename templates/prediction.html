@@ -14,9 +14,9 @@
                 <i class="fas fa-lightbulb mr-2"></i>Why Predict Outcomes?
             </h4>
             <p class="text-gray-600 leading-relaxed">
-                The <strong>Design and Development of a Hybrid Deep Learning Model for Student Performance Prediction in
+                The <strong>Design and Development of a Deep Learning Model for Student Performance Prediction in
                     MOOCs: Integrating Optimized Feature Selection</strong> enables educators to forecast student
-                performance in Massive Open Online Courses (MOOCs). Using a hybrid CNN+LSTM model, the system analyzes
+                performance in Massive Open Online Courses (MOOCs). Using a deep neural network, the system analyzes
                 academic, engagement, and demographic data to predict outcomes (Pass, Fail, Withdrawn, Distinction).
                 This tool helps identify at-risk students early, supporting timely interventions to enhance success
                 rates.
@@ -36,19 +36,18 @@
                     </h5>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-group">
-                            <label for="num_of_prev_attempts" class="block text-gray-600 mb-1">
-                                Number of Previous Attempts (0-5)
+                            <label for="studied_credits" class="block text-gray-600 mb-1">
+                                Studied Credits (30-420)
                             </label>
-                            <input type="number" id="num_of_prev_attempts" name="num_of_prev_attempts" min="0" max="5"
-                                value="0" step="1" required
+                            <input type="number" id="studied_credits" name="studied_credits" min="30" max="420"
+                                value="60" step="10" required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
-                            <label for="studied_credits" class="block text-gray-600 mb-1">
-                                Studied Credits (30-200)
+                            <label for="date" class="block text-gray-600 mb-1">
+                                Interaction Date (0-269)
                             </label>
-                            <input type="number" id="studied_credits" name="studied_credits" min="30" max="200"
-                                value="60" step="10" required
+                            <input type="number" id="date" name="date" min="0" max="269" value="100" step="1" required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
@@ -62,32 +61,41 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-group">
                             <label for="forumng" class="block text-gray-600 mb-1">
-                                Forum Interactions (0-100)
+                                Forum Interactions (0-107)
                             </label>
-                            <input type="number" id="forumng" name="forumng" min="0" max="100" value="10" step="1"
+                            <input type="number" id="forumng" name="forumng" min="0" max="107" value="10" step="1"
                                 required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
                             <label for="oucontent" class="block text-gray-600 mb-1">
-                                Content Interactions (0-200)
+                                Content Interactions (0-344)
                             </label>
-                            <input type="number" id="oucontent" name="oucontent" min="0" max="200" value="50" step="1"
+                            <input type="number" id="oucontent" name="oucontent" min="0" max="344" value="50" step="1"
                                 required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
-                            <label for="quiz" class="block text-gray-600 mb-1">
-                                Quiz Interactions (0-50)
+                            <label for="resource" class="block text-gray-600 mb-1">
+                                Resource Interactions (0-19)
                             </label>
-                            <input type="number" id="quiz" name="quiz" min="0" max="50" value="5" step="1" required
+                            <input type="number" id="resource" name="resource" min="0" max="19" value="5" step="1"
+                                required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="form-group">
-                            <label for="resource" class="block text-gray-600 mb-1">
-                                Resource Interactions (0-100)
+                            <label for="homepage" class="block text-gray-600 mb-1">
+                                Homepage Visits (0-65)
                             </label>
-                            <input type="number" id="resource" name="resource" min="0" max="100" value="20" step="1"
+                            <input type="number" id="homepage" name="homepage" min="0" max="65" value="5" step="1"
+                                required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="form-group">
+                            <label for="subpage" class="block text-gray-600 mb-1">
+                                Subpage Visits (0-22)
+                            </label>
+                            <input type="number" id="subpage" name="subpage" min="0" max="22" value="3" step="1"
                                 required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -116,6 +124,16 @@
                                 Highest Education: HE Qualification
                             </label>
                             <select id="highest_education_he" name="highest_education_HE Qualification" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="highest_education_lower" class="block text-gray-600 mb-1">
+                                Highest Education: Lower Than A Level
+                            </label>
+                            <select id="highest_education_lower" name="highest_education_Lower Than A Level" required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
@@ -156,6 +174,26 @@
                                 Disability
                             </label>
                             <select id="disability_y" name="disability_Y" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender_m" class="block text-gray-600 mb-1">
+                                Gender: Male
+                            </label>
+                            <select id="gender_m" name="gender_M" required
+                                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="code_module_aaa" class="block text-gray-600 mb-1">
+                                Course Module: AAA
+                            </label>
+                            <select id="code_module_aaa" name="code_module_AAA" required
                                 class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-blue-500">
                                 <option value="0">No</option>
                                 <option value="1">Yes</option>
@@ -273,7 +311,7 @@
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
                     <a href="/model" class="text-blue-600 hover:text-blue-800">Model Details</a>: Learn about the
-                    CNN+LSTM model.
+                    deep neural network model.
                 </li>
                 <li class="flex items-start">
                     <span class="text-blue-600 mr-2">◆</span>
@@ -286,5 +324,5 @@
 </section>
 {% endblock %}
 {% block scripts %}
-<script src="/static/js/scripts.js"></script>
+<script src="/static/js/prediction.js"></script>
 {% endblock %}

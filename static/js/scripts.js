@@ -13,18 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const inputs = {};
             let isValid = true;
             const ranges = {
-                'num_of_prev_attempts': [0, 5],
-                'studied_credits': [30, 200],
-                'forumng': [0, 100],
-                'oucontent': [0, 200],
-                'quiz': [0, 50],
-                'resource': [0, 100],
+                'studied_credits': [30, 420],
+                'forumng': [0, 107],
+                'oucontent': [0, 344],
+                'resource': [0, 19],
                 'highest_education_A Level or Equivalent': [0, 1],
                 'highest_education_HE Qualification': [0, 1],
                 'imd_band_0-10%': [0, 1],
                 'imd_band_90-100%': [0, 1],
                 'age_band_0-35': [0, 1],
-                'disability_Y': [0, 1]
+                'disability_Y': [0, 1],
+                'homepage': [0, 65],
+                'subpage': [0, 22],
+                'gender_M': [0, 1],
+                'code_module_AAA': [0, 1],
+                'date': [0, 269],
+                'highest_education_Lower Than A Level': [0, 1]
             };
 
             for (const input of form.elements) {

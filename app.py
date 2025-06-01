@@ -12,63 +12,66 @@ app = Flask(__name__)
 # Set up logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Define the CNN+LSTM model
-class CNNLSTM(nn.Module):
-    def __init__(self, num_classes=4):
-        super(CNNLSTM, self).__init__()
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=16, kernel_size=3, padding=1)
-        self.relu = nn.ReLU()
-        self.pool = nn.MaxPool1d(kernel_size=2)
-        self.lstm = nn.LSTM(input_size=16, hidden_size=32, num_layers=1, batch_first=True)
-        self.fc1 = nn.Linear(32, 64)
-        self.fc2 = nn.Linear(64, num_classes)
-        self.dropout = nn.Dropout(0.3)
+# Define the SimpleNN model
+class SimpleNN(nn.Module):
+    def __init__(self, input_size, num_classes):
+        super(SimpleNN, self).__init__()
+        self.model = nn.Sequential(
+            nn.Linear(input_size, 128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, num_classes)
+        )
     
     def forward(self, x):
         logging.debug(f"Input shape to forward: {x.shape}")
-        x = self.conv1(x)
-        x = self.relu(x)
-        x = self.pool(x)
-        x = x.permute(0, 2, 1)
-        x, _ = self.lstm(x)
-        x = x[:, -1, :]
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-        x = self.fc2(x)
+        x = self.model(x)
         logging.debug(f"Output shape from forward: {x.shape}")
         return x
 
-# Load model and scaler
+# Load model, scaler, and label encoder
 try:
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = CNNLSTM(num_classes=4).to(device)
-    model.load_state_dict(torch.load('model/student_prediction_model.pth', map_location=device))
+    model = SimpleNN(input_size=16, num_classes=4).to(device)
+    model.load_state_dict(torch.load('model/model.pth', map_location=device))
     model.eval()
-    scaler = joblib.load('model/scaler.pkl')
-    logging.info("Model and scaler loaded successfully")
+    scaler = joblib.load('model/feature_scaler.pkl')
+    label_encoder = joblib.load('model/label_encoder.pkl')
+    logging.info("Model, scaler, and label encoder loaded successfully")
 except Exception as e:
-    logging.error(f"Error loading model or scaler: {e}", exc_info=True)
+    logging.error(f"Error loading model, scaler, or label encoder: {e}", exc_info=True)
     raise
 
 FEATURES = [
-    'num_of_prev_attempts', 'studied_credits', 'forumng', 'oucontent', 'quiz', 'resource',
+    'studied_credits', 'forumng', 'oucontent', 'resource',
     'highest_education_A Level or Equivalent', 'highest_education_HE Qualification',
-    'imd_band_0-10%', 'imd_band_90-100%', 'age_band_0-35', 'disability_Y'
+    'imd_band_0-10%', 'imd_band_90-100%', 'age_band_0-35', 'disability_Y',
+    'homepage', 'subpage', 'gender_M', 'code_module_AAA', 'date',
+    'highest_education_Lower Than A Level'
 ]
+NUMERICAL_FEATURES = ['studied_credits', 'forumng', 'oucontent', 'resource', 'homepage', 'subpage', 'date']
 RANGES = {
-    'num_of_prev_attempts': (0, 5),
-    'studied_credits': (30, 200),
-    'forumng': (0, 100),
-    'oucontent': (0, 200),
-    'quiz': (0, 50),
-    'resource': (0, 100),
+    'studied_credits': (30, 420),
+    'forumng': (0, 107),
+    'oucontent': (0, 344),
+    'resource': (0, 19),
     'highest_education_A Level or Equivalent': (0, 1),
     'highest_education_HE Qualification': (0, 1),
     'imd_band_0-10%': (0, 1),
     'imd_band_90-100%': (0, 1),
     'age_band_0-35': (0, 1),
-    'disability_Y': (0, 1)
+    'disability_Y': (0, 1),
+    'homepage': (0, 65),
+    'subpage': (0, 22),
+    'gender_M': (0, 1),
+    'code_module_AAA': (0, 1),
+    'date': (0, 269),
+    'highest_education_Lower Than A Level': (0, 1)
 }
 
 def load_dataset():
@@ -76,8 +79,7 @@ def load_dataset():
         df = pd.read_csv('data/reduced_dataset.csv')
         logging.info("Dataset loaded successfully")
         
-        feature_means = df[['num_of_prev_attempts', 'studied_credits', 'forumng', 
-                           'oucontent', 'quiz', 'resource']].mean().to_dict()
+        feature_means = df[['studied_credits', 'forumng', 'oucontent', 'resource', 'homepage', 'subpage', 'date']].mean().to_dict()
         
         outcome_counts = df['final_result'].value_counts().to_dict()
         
@@ -102,12 +104,13 @@ def load_dataset():
         logging.error(f"Error loading dataset: {e}")
         return {
             'feature_means': {
-                'num_of_prev_attempts': 0.5,
                 'studied_credits': 60.0,
                 'forumng': 20.0,
                 'oucontent': 50.0,
-                'quiz': 10.0,
-                'resource': 30.0
+                'resource': 10.0,
+                'homepage': 5.0,
+                'subpage': 3.0,
+                'date': 100.0
             },
             'outcome_counts': {
                 'Fail': 100,
@@ -205,7 +208,7 @@ def result():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        inputs = []
+        inputs = {}
         for feature in FEATURES:
             value = request.form.get(feature)
             if value is None or value == '':
@@ -220,18 +223,21 @@ def predict():
             if not (min_val <= value <= max_val):
                 logging.error(f"Value out of range for {feature}: {value}")
                 return jsonify({'error': f'{feature} must be between {min_val} and {max_val}'}), 400
-            inputs.append(value)
+            inputs[feature] = value
         
-        inputs = np.array(inputs, dtype=np.float32).reshape(1, -1)
-        inputs_scaled = scaler.transform(inputs)
-        inputs_tensor = torch.tensor(inputs_scaled, dtype=torch.float32).reshape(1, 1, 12).to(device)
+        # Preprocess inputs
+        df = pd.DataFrame([inputs])
+        numerical = df[NUMERICAL_FEATURES].apply(lambda x: np.log1p(x - x.min()) if x.min() < 0 else np.log1p(x))
+        numerical_scaled = scaler.transform(numerical)
+        binary = df[[f for f in FEATURES if f not in NUMERICAL_FEATURES]].values
+        inputs_scaled = np.hstack([numerical_scaled, binary]).astype(np.float32)
+        inputs_tensor = torch.tensor(inputs_scaled, dtype=torch.float32).to(device)
         
         with torch.no_grad():
             outputs = model(inputs_tensor)
             probabilities = torch.softmax(outputs, dim=1)
             confidence, predicted = torch.max(probabilities, 1)
-            classes = ['Fail', 'Pass', 'Withdrawn', 'Distinction']
-            prediction = classes[predicted.item()]
+            prediction = label_encoder.inverse_transform(predicted.cpu().numpy())[0]
         
         logging.info(f"Prediction: {prediction}, Confidence: {confidence.item()}")
         
